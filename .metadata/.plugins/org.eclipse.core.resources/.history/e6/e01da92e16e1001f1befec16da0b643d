@@ -1,0 +1,8 @@
+package br.ifsp.lucasparila;
+
+public class Aluno extends Usuario {
+    // Construtor
+    public Aluno(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        super(username, senha, prontuario, nome, dataNascimento);
+    }
+}

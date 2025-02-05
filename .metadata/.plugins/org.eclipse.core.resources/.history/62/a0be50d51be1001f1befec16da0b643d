@@ -1,0 +1,79 @@
+package br.ifsp.lucasparila;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar um administrador
+        Administrador admin = new Administrador("admin", "admin123");
+
+        // Cadastrar alunos
+        admin.cadastrarAluno("aluno1", "senha123", "P12345", "João Silva", "01/01/2000");
+        admin.cadastrarAluno("aluno2", "senha456", "P67890", "Maria Oliveira", "15/05/2001");
+
+        // Cadastrar professores
+        admin.cadastrarProfessor("prof1", "senha789", "P11111", "Carlos Souza", "20/10/1980");
+        admin.cadastrarProfessor("prof2", "senha000", "P22222", "Ana Lima", "25/03/1975");
+        
+     // Criar disciplinas
+        admin.cadastrarDisciplina("Matemática", "MAT", "Conteúdo de Matemática", 60, 30);
+        admin.cadastrarDisciplina("Português", "POR", "Conteúdo de Português", 45, 20);
+
+        // Adicionar avaliações
+        Professor professor1 = admin.buscarProfessorPorUsername("prof1");
+        Disciplina disciplinaMatematica = admin.buscarDisciplinaPorSigla("MAT");
+        professor1.adicionarAvaliacao(disciplinaMatematica, "Prova 1", 2.5);
+        professor1.adicionarAvaliacao(disciplinaMatematica, "Trabalho", 1.5);
+
+
+        // Criar turmas
+        admin.criarTurma("TURMA2023-1", "prof1", "MAT"); // Vincula ao professor "Carlos Souza"
+        admin.criarTurma("TURMA2023-2", "prof2", "POR"); // Vincula ao professor "Ana Lima"
+
+        
+        Professor professor2 = admin.buscarProfessorPorUsername("prof2");
+        Disciplina disciplinaPortugues = admin.buscarDisciplinaPorSigla("POR");
+        professor2.adicionarAvaliacao(disciplinaPortugues, "Redação", 3.0);
+
+        // Matricular alunos nas turmas
+        Aluno aluno1 = admin.buscarAlunoPorUsername("aluno1");
+        Turma turma1 = admin.buscarTurmaPorCodigo("TURMA2023-1");
+        aluno1.matricularEmTurma(turma1);
+
+        Aluno aluno2 = admin.buscarAlunoPorUsername("aluno2");
+        Turma turma2 = admin.buscarTurmaPorCodigo("TURMA2023-2");
+        aluno2.matricularEmTurma(turma2);
+
+        // Listar todos os alunos
+        System.out.println("\n--- Lista de Alunos ---");
+        admin.listarAlunos();
+
+        // Listar todos os professores
+        System.out.println("\n--- Lista de Professores ---");
+        admin.listarProfessores();
+
+        // Listar todas as turmas
+        System.out.println("\n--- Lista de Turmas ---");
+        admin.listarTurmas();
+
+        // Listar todas as disciplinas e suas avaliações
+        System.out.println("\n--- Disciplinas e Avaliações ---");
+        for (Disciplina disciplina : admin.getDisciplinas()) {
+            System.out.println("Disciplina: " + disciplina.getNome());
+            for (Avaliacao avaliacao : disciplina.getAvaliacoes()) {
+                System.out.println("  Avaliação: " + avaliacao.getNome() + " | Peso: " + avaliacao.getPeso() + " | Nota Parcial: " + avaliacao.calcularNotaParcial());
+            }
+        }
+
+        // Visualizar as turmas nas quais o aluno está matriculado
+        System.out.println("\n--- Turmas de João Silva ---");
+        aluno1.visualizarTurmas();
+
+        // Visualizar as turmas nas quais o aluno está matriculado
+        System.out.println("\n--- Turmas de Maria Oliveira ---");
+        aluno2.visualizarTurmas();
+
+        // Exibir as informações das turmas
+        System.out.println("\n--- Detalhes das Turmas ---");
+        turma1.visualizarInformacoes();
+        turma2.visualizarInformacoes();
+    }
+}

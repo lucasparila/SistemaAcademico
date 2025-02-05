@@ -1,0 +1,36 @@
+package br.ifsp.lucasparila;
+
+import java.util.Date;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar um administrador
+        Administrador admin = new Administrador("admin", "admin123");
+
+        // Cadastrar um aluno
+        Aluno aluno = admin.cadastrarAluno(
+            "aluno1", 
+            "senha123", 
+            "P12345", 
+            "João Silva", 
+            "01/01/2000" // Data de nascimento: 1 de janeiro de 2000
+        );
+
+        // Cadastrar um professor
+        Professor professor = admin.cadastrarProfessor(
+            "prof1", 
+            "senha456", 
+            "P67890", 
+            "Maria Oliveira", 
+            "15/05/1980" // Data de nascimento: 15 de maio de 1980
+        );
+
+        // Visualizar informações do aluno
+        System.out.println("Informações do Aluno:");
+        aluno.visualizarInformacoes();
+
+        // Visualizar informações do professor
+        System.out.println("\nInformações do Professor:");
+        professor.visualizarInformacoes();
+    }
+}

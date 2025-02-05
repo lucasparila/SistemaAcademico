@@ -1,0 +1,44 @@
+package br.ifsp.lucasparila;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar um administrador
+        Administrador admin = new Administrador("admin", "admin123");
+
+        // Cadastrar alunos
+        admin.cadastrarAluno("aluno1", "senha123", "P12345", "João Silva", "01/01/2000");
+        admin.cadastrarAluno("aluno2", "senha456", "P67890", "Maria Oliveira", "15/05/2001");
+
+        // Cadastrar professores
+        admin.cadastrarProfessor("prof1", "senha789", "P11111", "Carlos Souza", "20/10/1980");
+        admin.cadastrarProfessor("prof2", "senha000", "P22222", "Ana Lima", "25/03/1975");
+
+        // Listar todos os alunos
+        System.out.println("\n--- Lista de Alunos ---");
+        admin.listarAlunos();
+
+        // Listar todos os professores
+        System.out.println("\n--- Lista de Professores ---");
+        admin.listarProfessores();
+
+        // Buscar um aluno pelo username
+        System.out.println("\n--- Buscando Aluno por Username ---");
+        Aluno alunoEncontrado = admin.buscarAlunoPorUsername("aluno1");
+        if (alunoEncontrado != null) {
+            System.out.println("Aluno encontrado:");
+            alunoEncontrado.visualizarInformacoes();
+        } else {
+            System.out.println("Aluno não encontrado.");
+        }
+
+        // Buscar um professor pelo username
+        System.out.println("\n--- Buscando Professor por Username ---");
+        Professor professorEncontrado = admin.buscarProfessorPorUsername("prof2");
+        if (professorEncontrado != null) {
+            System.out.println("Professor encontrado:");
+            professorEncontrado.visualizarInformacoes();
+        } else {
+            System.out.println("Professor não encontrado.");
+        }
+    }
+}

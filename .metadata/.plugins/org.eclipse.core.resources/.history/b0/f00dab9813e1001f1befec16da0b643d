@@ -1,0 +1,42 @@
+package br.ifsp.lucasparila;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar um administrador
+        Administrador admin = new Administrador("admin", "admin123");
+
+        // Cadastrar alunos
+        admin.cadastrarAluno("aluno1", "senha123", "P12345", "João Silva", "01/01/2000");
+        admin.cadastrarAluno("aluno2", "senha456", "P67890", "Maria Oliveira", "15/05/2001");
+
+        // Cadastrar professores
+        admin.cadastrarProfessor("prof1", "senha789", "P11111", "Carlos Souza", "20/10/1980");
+        admin.cadastrarProfessor("prof2", "senha000", "P22222", "Ana Lima", "25/03/1975");
+
+        // Criar turmas
+        admin.criarTurma("TURMA2023-1", "prof1"); // Vincula ao professor "Carlos Souza"
+        admin.criarTurma("TURMA2023-2", "prof2"); // Vincula ao professor "Ana Lima"
+
+        // Listar todos os alunos
+        System.out.println("\n--- Lista de Alunos ---");
+        admin.listarAlunos();
+
+        // Listar todos os professores
+        System.out.println("\n--- Lista de Professores ---");
+        admin.listarProfessores();
+
+        // Listar todas as turmas
+        System.out.println("\n--- Lista de Turmas ---");
+        admin.listarTurmas();
+
+        // Buscar uma turma pelo código
+        System.out.println("\n--- Buscando Turma por Código ---");
+        Turma turmaEncontrada = admin.buscarTurmaPorCodigo("TURMA2023-1");
+        if (turmaEncontrada != null) {
+            System.out.println("Turma encontrada:");
+            turmaEncontrada.visualizarInformacoes();
+        } else {
+            System.out.println("Turma não encontrada.");
+        }
+    }
+}

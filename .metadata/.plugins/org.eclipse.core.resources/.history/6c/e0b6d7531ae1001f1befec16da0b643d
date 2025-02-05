@@ -1,0 +1,45 @@
+package br.ifsp.lucasparila;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Aluno extends Usuario {
+    private ArrayList<Matricula> matriculas = new ArrayList<>();
+
+    // Construtor
+    public Aluno(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        super(username, senha, prontuario, nome, dataNascimento);
+    }
+
+    // Método para visualizar as turmas disponíveis
+    public void visualizarTurmasDisponiveis(List<Turma> list) {
+        if (list.isEmpty()) {
+            System.out.println("Nenhuma turma disponível.");
+        } else {
+            System.out.println("Turmas Disponíveis:");
+            for (Turma turma : list) {
+                turma.visualizarInformacoes();
+                System.out.println("-------------------");
+            }
+        }
+    }
+
+    // Método para se matricular em uma turma
+    public void matricularEmTurma(Turma turma) {
+        Matricula matricula = new Matricula(this, turma);
+        matriculas.add(matricula);
+        System.out.println("Matrícula realizada com sucesso para a turma: " + turma.getCodigo());
+    }
+
+    // Método para visualizar as matrículas do aluno
+    public void visualizarMatriculas() {
+        if (matriculas.isEmpty()) {
+            System.out.println("Nenhuma matrícula realizada.");
+        } else {
+            System.out.println("Matrículas do Aluno:");
+            for (Matricula matricula : matriculas) {
+                matricula.visualizarMatricula();
+            }
+        }
+    }
+}

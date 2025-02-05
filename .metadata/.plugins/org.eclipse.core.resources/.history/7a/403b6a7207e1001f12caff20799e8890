@@ -1,0 +1,20 @@
+package br.ifsp.lucasparila;
+
+import java.util.Date;
+
+public class Administrador extends Usuario {
+    // Construtor
+    public Administrador(String username, String senha) {
+        super(username, senha, null, null, null); // Administrador não tem prontuário, nome ou data de nascimento
+    }
+
+    // Método para cadastrar alunos
+    public Aluno cadastrarAluno(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        return new Aluno(username, senha, prontuario, nome, dataNascimento);
+    }
+
+    // Método para cadastrar professores
+    public Professor cadastrarProfessor(String username, String senha, String prontuario, String nome, Date dataNascimento) {
+        return new Professor(username, senha, prontuario, nome, dataNascimento);
+    }
+}

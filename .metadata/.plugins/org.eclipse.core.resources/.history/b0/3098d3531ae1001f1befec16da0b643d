@@ -1,0 +1,68 @@
+package br.ifsp.lucasparila;
+
+public class Disciplina {
+    private String nome;
+    private String sigla;
+    private String emenda;
+    private int cargaHoraria;
+    private int totalAulas;
+
+    // Construtor
+    public Disciplina(String nome, String sigla, String emenda, int cargaHoraria, int totalAulas) {
+        this.nome = nome;
+        this.sigla = sigla;
+        this.emenda = emenda;
+        this.cargaHoraria = cargaHoraria;
+        this.totalAulas = totalAulas;
+    }
+
+    // Getters e Setters
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getSigla() {
+        return sigla;
+    }
+
+    public void setSigla(String sigla) {
+        this.sigla = sigla;
+    }
+
+    public String getEmenda() {
+        return emenda;
+    }
+
+    public void setEmenda(String emenda) {
+        this.emenda = emenda;
+    }
+
+    public int getCargaHoraria() {
+        return cargaHoraria;
+    }
+
+    public void setCargaHoraria(int cargaHoraria) {
+        this.cargaHoraria = cargaHoraria;
+    }
+
+    public int getTotalAulas() {
+        return totalAulas;
+    }
+
+    public void setTotalAulas(int totalAulas) {
+        this.totalAulas = totalAulas;
+    }
+
+    // Método para visualizar informações da disciplina
+    public void visualizarInformacoes() {
+        System.out.println("Nome: " + nome);
+        System.out.println("Sigla: " + sigla);
+        System.out.println("Emenda: " + emenda);
+        System.out.println("Carga Horária: " + cargaHoraria + " horas");
+        System.out.println("Total de Aulas: " + totalAulas);
+    }
+}

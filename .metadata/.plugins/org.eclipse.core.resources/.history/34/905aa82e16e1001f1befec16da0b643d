@@ -1,0 +1,61 @@
+package br.ifsp.lucasparila;
+
+public class Main {
+    public static void main(String[] args) {
+        // Criar um administrador
+        Administrador admin = new Administrador("admin", "admin123");
+
+        // Cadastrar alunos
+        admin.cadastrarAluno("aluno1", "senha123", "P12345", "João Silva", "01/01/2000");
+        admin.cadastrarAluno("aluno2", "senha456", "P67890", "Maria Oliveira", "15/05/2001");
+
+        // Cadastrar professores
+        admin.cadastrarProfessor("prof1", "senha789", "P11111", "Carlos Souza", "20/10/1980");
+        admin.cadastrarProfessor("prof2", "senha000", "P22222", "Ana Lima", "25/03/1975");
+
+        // Cadastrar disciplinas
+        admin.cadastrarDisciplina("Matemática", "MAT101", "Emenda da disciplina de Matemática", 60, 30);
+        admin.cadastrarDisciplina("História", "HIS101", "Emenda da disciplina de História", 50, 25);
+
+        // Criar turmas
+        admin.criarTurma("TURMA2023-1", "prof1", "MAT101"); // Vincula ao professor "Carlos Souza" e à disciplina "MAT101"
+        admin.criarTurma("TURMA2023-2", "prof2", "HIS101"); // Vincula ao professor "Ana Lima" e à disciplina "HIS101"
+
+        // Listar todos os alunos, professores, turmas e disciplinas
+        System.out.println("\n--- Lista de Alunos ---");
+        admin.listarAlunos();
+
+        System.out.println("\n--- Lista de Professores ---");
+        admin.listarProfessores();
+
+        System.out.println("\n--- Lista de Disciplinas ---");
+        admin.listarDisciplinas();
+
+        System.out.println("\n--- Lista de Turmas ---");
+        admin.listarTurmas();
+
+        // Buscar uma turma
+        System.out.println("\n--- Buscando Turma por Código ---");
+        Turma turmaEncontrada = admin.buscarTurmaPorCodigo("TURMA2023-1");
+        if (turmaEncontrada != null) {
+            System.out.println("Turma encontrada:");
+            turmaEncontrada.visualizarInformacoes();
+        }
+
+        // Atualizar uma turma
+        System.out.println("\n--- Atualizando Turma ---");
+        admin.atualizarTurma("TURMA2023-1", "TURMA2023-3", "prof2", "MAT101");
+
+        // Listar turmas após atualização
+        System.out.println("\n--- Lista de Turmas Após Atualização ---");
+        admin.listarTurmas();
+
+        // Remover uma turma
+        System.out.println("\n--- Removendo Turma ---");
+        admin.removerTurma("TURMA2023-2");
+
+        // Listar turmas após remoção
+        System.out.println("\n--- Lista de Turmas Após Remoção ---");
+        admin.listarTurmas();
+    }
+}

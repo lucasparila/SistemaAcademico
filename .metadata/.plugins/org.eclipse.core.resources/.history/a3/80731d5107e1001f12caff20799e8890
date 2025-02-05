@@ -1,0 +1,10 @@
+package br.ifsp.lucasparila;
+
+import java.util.Date;
+
+public class Professor extends Usuario {
+    // Construtor
+    public Professor(String username, String senha, String prontuario, String nome, Date dataNascimento) {
+        super(username, senha, prontuario, nome, dataNascimento);
+    }
+}

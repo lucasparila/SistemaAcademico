@@ -1,0 +1,111 @@
+package br.ifsp.lucasparila;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Administrador extends Usuario {
+    // Listas para armazenar alunos, professores e turmas
+    private List<Aluno> alunos = new ArrayList<>();
+    private List<Professor> professores = new ArrayList<>();
+    private List<Turma> turmas = new ArrayList<>();
+
+    // Construtor
+    public Administrador(String username, String senha) {
+        super(username, senha, null, null, null); // Administrador não tem prontuário, nome ou data de nascimento
+    }
+
+    // Método para cadastrar alunos
+    public void cadastrarAluno(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        Aluno aluno = new Aluno(username, senha, prontuario, nome, dataNascimento);
+        alunos.add(aluno);
+        System.out.println("Aluno cadastrado com sucesso: " + aluno.getNome());
+    }
+
+    // Método para cadastrar professores
+    public void cadastrarProfessor(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        Professor professor = new Professor(username, senha, prontuario, nome, dataNascimento);
+        professores.add(professor);
+        System.out.println("Professor cadastrado com sucesso: " + professor.getNome());
+    }
+
+    // Método para criar uma turma
+    public void criarTurma(String codigo, String usernameProfessor) {
+        Professor professor = buscarProfessorPorUsername(usernameProfessor);
+        if (professor != null) {
+            Turma turma = new Turma(codigo, professor);
+            turmas.add(turma);
+            System.out.println("Turma criada com sucesso: " + codigo);
+        } else {
+            System.out.println("Professor não encontrado. Turma não criada.");
+        }
+    }
+
+    // Método para listar todos os alunos
+    public void listarAlunos() {
+        if (alunos.isEmpty()) {
+            System.out.println("Nenhum aluno cadastrado.");
+        } else {
+            System.out.println("Lista de Alunos:");
+            for (Aluno aluno : alunos) {
+                aluno.visualizarInformacoes();
+                System.out.println("-------------------");
+            }
+        }
+    }
+
+    // Método para listar todos os professores
+    public void listarProfessores() {
+        if (professores.isEmpty()) {
+            System.out.println("Nenhum professor cadastrado.");
+        } else {
+            System.out.println("Lista de Professores:");
+            for (Professor professor : professores) {
+                professor.visualizarInformacoes();
+                System.out.println("-------------------");
+            }
+        }
+    }
+
+    // Método para listar todas as turmas
+    public void listarTurmas() {
+        if (turmas.isEmpty()) {
+            System.out.println("Nenhuma turma cadastrada.");
+        } else {
+            System.out.println("Lista de Turmas:");
+            for (Turma turma : turmas) {
+                turma.visualizarInformacoes();
+                System.out.println("-------------------");
+            }
+        }
+    }
+
+    // Método para buscar um aluno pelo username
+    public Aluno buscarAlunoPorUsername(String username) {
+        for (Aluno aluno : alunos) {
+            if (aluno.getUsername().equals(username)) {
+                return aluno;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+
+    // Método para buscar um professor pelo username
+    public Professor buscarProfessorPorUsername(String username) {
+        for (Professor professor : professores) {
+            if (professor.getUsername().equals(username)) {
+                return professor;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+
+    // Método para buscar uma turma pelo código
+    public Turma buscarTurmaPorCodigo(String codigo) {
+        for (Turma turma : turmas) {
+            if (turma.getCodigo().equals(codigo)) {
+                return turma;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+}

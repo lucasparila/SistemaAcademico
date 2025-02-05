@@ -1,0 +1,37 @@
+package br.ifsp.lucasparila;
+
+public class Matricula {
+    private Aluno aluno;
+    private Turma turma;
+
+    // Construtor
+    public Matricula(Aluno aluno, Turma turma) {
+        this.aluno = aluno;
+        this.turma = turma;
+    }
+
+    // Getters e Setters
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
+    // Método para visualizar a matrícula
+    public void visualizarMatricula() {
+        System.out.println("Aluno: " + aluno.getNome());
+        System.out.println("Matriculado na turma: " + turma.getCodigo());
+        System.out.println("Disciplina: " + turma.getDisciplina().getNome());
+        System.out.println("----------------------------");
+    }
+}
