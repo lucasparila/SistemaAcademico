@@ -1,0 +1,75 @@
+package br.ifsp.lucasparila;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Professor extends Usuario {
+	List<Turma> turmas = new ArrayList<>();
+	// Construtor
+    public Professor(String username, String senha, String prontuario, String nome, String dataNascimento) {
+        super(username, senha, prontuario, nome, dataNascimento);
+    }
+
+    // Método para adicionar avaliação a uma disciplina
+    public void adicionarAvaliacao(Turma turma, String nomeAvaliacao, double peso) {
+        Avaliacao avaliacao = new Avaliacao(nomeAvaliacao, peso);
+        turma.adicionarAvaliacao(avaliacao);
+        System.out.println("Avaliação '" + nomeAvaliacao + "' adicionada à turma " + turma.getCodigo());
+    }
+    
+    @Override
+    public boolean validarLogin(String senha) {
+    	return super.getSenha().equals(senha);
+    }
+    
+    public String visualizarMatriculas() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for(Turma t : turmas) {
+    		sb.append(t.exibirMatriculas());
+    	}
+    	
+    	return sb.toString();
+    }
+    
+    public void adicionarProfessor(Turma turma) {
+    	turmas.add(turma);
+    }
+    
+    public void retirarProfessorTurmas() {
+    	
+    	for(Turma t : turmas) {
+    		t.setProfessor(null);
+    	}
+    }
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
+    
+ 
+    public Turma buscarTurmaPorCodigo(String codigo) {
+        for (Turma turma : turmas) {
+            if (turma.getCodigo().equals(codigo)) {
+                return turma;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+    
+    public String visualizarTurmasDisponiveis(){
+    	
+    	StringBuilder sb= new StringBuilder();
+        if (turmas.isEmpty()) {
+            sb.append("Nenhuma turma disponível.");
+        } else {
+            sb.append("Turmas Disponíveis:");
+            for (Turma turma : turmas) {
+                sb.append(turma.visualizarInformacoes());
+                
+            }
+        }
+        
+        return sb.toString();
+    	
+    }
+}

@@ -1,0 +1,71 @@
+package br.ifsp.lucasparila;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Matricula {
+	
+	private List<Avaliacao> avaliacoes;
+    private Aluno aluno;
+    private Turma turma;
+
+    // Construtor
+    public Matricula(Aluno aluno, Turma turma) {
+        this.aluno = aluno;
+        this.turma = turma;
+        avaliacoes = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+
+	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+	
+	public void setNotaAvaliacao(Avaliacao avaliacao, double nota) {
+		for(Avaliacao a : avaliacoes) {
+			if (a.equals(avaliacao)) {
+				a.setNota(nota);
+				break;
+			}
+		}
+	}
+
+	public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
+    // Método para visualizar a matrícula
+    public String visualizarMatricula() {
+    	StringBuilder sb = new StringBuilder();
+        sb.append("Aluno: " + aluno.getNome());
+        sb.append("Matriculado na turma: " + turma.getCodigo());
+        sb.append("Disciplina: " + turma.getDisciplina().getNome());
+        sb.append("Avaliações:\n" + turma.getDisciplina());
+        sb.append("----------------------------");
+        
+        return sb.toString();
+    }
+    
+    public void adicionarAvaliacao(Avaliacao avaliacao) {
+    	avaliacoes.add(avaliacao);
+    }
+    
+    
+
+}

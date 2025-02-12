@@ -1,0 +1,142 @@
+package br.ifsp.lucasparila;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Turma {
+    private String codigo;
+    private Professor professor;
+    private Disciplina disciplina;
+    private List<Avaliacao> avaliacoes;
+    private List<Matricula> matriculas;
+    
+
+    // Construtor
+    public Turma(String codigo, Professor professor, Disciplina disciplina) {
+        this.codigo = codigo;
+        this.professor = professor;
+        this.disciplina = disciplina;
+        matriculas = new ArrayList<>();
+        avaliacoes = new ArrayList<>();
+    }
+
+    // Getters e Setters
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public Professor getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+    
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    // Método para adicionar avaliação
+    public void adicionarAvaliacao(Avaliacao avaliacao) {
+        this.avaliacoes.add(avaliacao);
+    }
+    
+    public Matricula buscarMatriculaPorProntuarioAluno (String prontuarioAluno) {
+    	for(Matricula a : matriculas) {
+    		if(a.getAluno().getProntuario().equals(prontuarioAluno)) {
+    			return a;
+    		}
+    		
+    	}
+    	
+    	return null;
+    }
+    
+    public void adicionarAvaliacoesMatriculas() {
+    	
+    	for(Avaliacao a : avaliacoes) {
+    		for(Matricula m : matriculas) {
+    			m.adicionarAvaliacao(a);
+    		}
+    	}
+    }
+    
+    public Avaliacao buscarAvaliacaoPorNome(String nome) {
+        for (Avaliacao avaliacao : avaliacoes) {
+            if (avaliacao.getNome().equals(nome)) {
+                return avaliacao;
+            }
+        }
+        return null; // Retorna null se não encontrar
+    }
+    
+    public void setNotaPorMatricula(Matricula matricula, Avaliacao avaliacao, double nota) {
+    	matricula.setNotaAvaliacao(avaliacao, nota);
+    }
+
+    public String visualizarInformacoes() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Código da Turma: ").append(codigo).append("\n");
+        if(this.professor == null) {
+        	sb.append("Professor Responsável: ").append(" - ").append("\n");
+        }else {
+        	sb.append("Professor Responsável: ").append(professor.getNome()).append("\n");
+        }
+        
+        sb.append("Disciplina: ").append(disciplina.getNome()).append("\n");
+        return sb.toString();
+    }
+    
+    public String exibirAvaliacoes() {
+        StringBuilder sb = new StringBuilder();
+        if (avaliacoes != null && !avaliacoes.isEmpty()) {
+            sb.append("Avaliações:\n");
+            for (Avaliacao avaliacao : avaliacoes) {
+                sb.append(" - ").append(avaliacao.getNome())
+                  .append(" (Peso: ").append(avaliacao.getPeso())
+                  .append(", Nota: ").append(avaliacao.getNota())
+                  .append(", Nota Parcial: ").append(avaliacao.calcularNotaParcial()).append(")\n");
+            }
+        } else {
+            sb.append("Nenhuma avaliação cadastrada.\n");
+        }
+        return sb.toString();
+   }
+    
+    public void adicionarMatricula(Matricula matricula) {
+    	this.matriculas.add(matricula);
+    }
+    
+    public List<Matricula> getMatriculas(){
+    	return matriculas;
+    }
+    
+    public String exibirMatriculas() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.visualizarInformacoes());
+        if (!matriculas.isEmpty()) {
+            sb.append("Matriculas:\n");
+            for (Matricula matricula : matriculas) {
+                sb.append("- ").append(matricula.getAluno().getNome()).append("\n");
+            }
+        } else {
+            sb.append("Nenhum aluno matriculado ainda.\n");
+        }
+        return sb.toString();
+    }
+
+}
+

@@ -1,0 +1,29 @@
+package br.ifsp.lucasparila;
+
+public class Frequencia {
+	private int aulasDadas;
+	private int faltas;
+	
+	Frequencia(){
+		this.aulasDadas = 0;
+		this.faltas= 0;
+	}
+
+	public int getAulasDadas() {
+		return aulasDadas;
+	}
+
+	public void setAulasDadas(int aulasDadas) {
+		this.aulasDadas = aulasDadas;
+	}
+
+	public int getFaltas() {
+		return faltas;
+	}
+
+	public void setFaltas(int faltas) {
+		this.faltas = faltas;
+	}
+	
+	
+}

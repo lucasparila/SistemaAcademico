@@ -1,0 +1,559 @@
+package br.ifsp.lucasparila.main;
+
+import javax.swing.JOptionPane;
+
+import br.ifsp.lucasparila.model.Administrador;
+import br.ifsp.lucasparila.model.Aluno;
+import br.ifsp.lucasparila.model.Avaliacao;
+import br.ifsp.lucasparila.model.Disciplina;
+import br.ifsp.lucasparila.model.Matricula;
+import br.ifsp.lucasparila.model.Professor;
+import br.ifsp.lucasparila.model.Turma;
+import br.ifsp.lucasparila.model.Usuario;
+
+public class Main {
+	
+    public static void main(String[] args) {
+        Administrador admin = new Administrador("admin", "admin");
+        boolean login = false;
+        Usuario usuario = null;
+        String tipoUsuario;
+        
+        do {
+        	
+        
+	        do {
+	            tipoUsuario = JOptionPane.showInputDialog("Escolha seu tipo de usuário:\n1 - Administrador\n2 - Aluno\n3 - Professor\n0 - Sair");
+	            
+	            if (tipoUsuario.equals("0")) {
+	                break;
+	            }
+	            
+	            String username = JOptionPane.showInputDialog("Digite seu username:");
+	            
+	            if (tipoUsuario.equals("1")) {
+	                usuario = admin;
+	            } else if (tipoUsuario.equals("2")) {
+	                usuario = admin.buscarAlunoPorUsername(username);
+	            } else if (tipoUsuario.equals("3")) {
+	                usuario = admin.buscarProfessorPorUsername(username);
+	            }
+	            
+	            if (usuario == null) {
+	                JOptionPane.showMessageDialog(null, "Usuário não encontrado.");
+	                continue;
+	            }
+	            
+	            String senha = JOptionPane.showInputDialog("Digite sua senha:");
+	            if (usuario.validarLogin(senha)) {
+	                JOptionPane.showMessageDialog(null, "Login bem-sucedido!");
+	                login = true;
+	            }
+	            
+	        }while(!login);
+	        
+	        
+	        if(usuario instanceof Administrador && !tipoUsuario.equals("0")) {
+	        	
+	        	 while (true) {
+	                 String menu = "Administrador\n"
+	                         + "1. Cadastrar Aluno\n"
+	                         + "2. Cadastrar Professor\n"
+	                         + "3. Criar Turma\n"
+	                         + "4. Cadastrar Disciplina\n"
+	                         + "5. Remover Aluno\n"
+	                         + "6. Remover Professor\n"
+	                         + "7. Remover Turma\n"
+	                         + "8. Remover Disciplia\n"
+	                         + "9. Atualizar Usuario\n"
+	                         + "10. Atualizar Disciplina\n"
+	                         + "11. Atualizar Turma\n"
+	                         + "0. Sair\n";
+	                 
+	                 String opcao = JOptionPane.showInputDialog(menu);
+	
+	                 if (opcao == null || opcao.equals("0")) {
+	                     JOptionPane.showMessageDialog(null, "Voltando ao menu princiapal...");
+	                     break;
+	                 }
+	             
+	
+	                 switch (opcao) {
+	                     case "1":
+	                         // Cadastrar aluno
+	                         String usernameAluno = JOptionPane.showInputDialog("Digite o username do aluno:");
+	                         String senhaAluno = JOptionPane.showInputDialog("Digite a senha do aluno:");
+	                         String prontuarioAluno = JOptionPane.showInputDialog("Digite o prontuário do aluno:");
+	                         String nomeAluno = JOptionPane.showInputDialog("Digite o nome do aluno:");
+	                         String dataNascimentoAluno = JOptionPane.showInputDialog("Digite a data de nascimento do aluno:");
+	                         admin.cadastrarAluno(usernameAluno, senhaAluno, prontuarioAluno, nomeAluno, dataNascimentoAluno);
+	                         JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso: " + nomeAluno);
+	                         break;
+	
+	                     case "2":
+	                         // Cadastrar professor
+	                         String usernameProfessor = JOptionPane.showInputDialog("Digite o username do professor:");
+	                         String senhaProfessor = JOptionPane.showInputDialog("Digite a senha do professor:");
+	                         String prontuarioProfessor = JOptionPane.showInputDialog("Digite o prontuário do professor:");
+	                         String nomeProfessor = JOptionPane.showInputDialog("Digite o nome do professor:");
+	                         String dataNascimentoProfessor = JOptionPane.showInputDialog("Digite a data de nascimento do professor:");
+	                         admin.cadastrarProfessor(usernameProfessor, senhaProfessor, prontuarioProfessor, nomeProfessor, dataNascimentoProfessor);
+	                         JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso: " + nomeProfessor);	                         
+	                         break;
+	
+	                     case "3":
+	                         // Criar turma
+	                         String codigoTurma = JOptionPane.showInputDialog("Digite o código da turma:");
+	                         String usernameProfessorTurma = JOptionPane.showInputDialog("Digite o username do professor para vincular à turma:");
+	                         String siglaDisciplinaTurma = JOptionPane.showInputDialog("Digito a sigla da disciplina que será vinculada a turma: ");
+	                         Professor professor = admin.buscarProfessorPorUsername(usernameProfessorTurma);
+	                         Disciplina disciplina = admin.buscarDisciplinaPorSigla(siglaDisciplinaTurma);
+	                         if (professor != null && disciplina != null) {
+	                             Turma turma = new Turma(codigoTurma, professor, disciplina);
+	                             admin.criarTurma(turma, professor);
+	                             JOptionPane.showMessageDialog(null, "Turma criada com sucesso: " + siglaDisciplinaTurma);	                             
+	                         } else {
+	                        	 JOptionPane.showMessageDialog(null, "Professor ou Disciplina não encontrados. Turma não criada.");	                             
+	                         }
+	                         break;
+	
+	                     case "4":
+	                         // Cadastrar disciplina
+	                         String nomeDisciplina = JOptionPane.showInputDialog("Digite o nome da disciplina:");
+	                         String siglaDisciplina = JOptionPane.showInputDialog("Digite a sigla da disciplina:");
+	                         String emendaDisciplina = JOptionPane.showInputDialog("Digite a emenda da disciplina:");
+	                         int cargaHorariaDisciplina = Integer.parseInt(JOptionPane.showInputDialog("Digite a carga horária da disciplina:"));
+	                         int totalAulasDisciplina = Integer.parseInt(JOptionPane.showInputDialog("Digite o total de aulas da disciplina:"));
+	                         Disciplina disciplinaNova = new Disciplina(nomeDisciplina, siglaDisciplina, emendaDisciplina, cargaHorariaDisciplina, totalAulasDisciplina);
+	                         admin.cadastrarDisciplina(disciplinaNova);
+	                         JOptionPane.showMessageDialog(null, "Turma criada com sucesso: " + siglaDisciplina);	                         
+	                         break;
+	
+	                     case "5":
+	                         // Remover Aluno
+	                         String usernameAlunoMatricula = JOptionPane.showInputDialog("Digite o username do aluno a ser removido:");	                       
+	                         Aluno alunoMatricula = admin.buscarAlunoPorUsername(usernameAlunoMatricula);	                       
+	                         if (alunoMatricula != null) {
+	                        	 admin.retirarAlunoTurmas(alunoMatricula);
+	                             admin.removerAluno(alunoMatricula);
+	                             JOptionPane.showMessageDialog(null, "Aluno removido com sucesso!");
+	                         } else {
+	                             JOptionPane.showMessageDialog(null, "Aluno não encontrados.");
+	                         }
+	                         break;
+	
+	                     case "6":
+	                         // Remover Professor
+	                         String userProfessorRemover = JOptionPane.showInputDialog("Digite o username do Professor a ser removido:");
+	                         Professor professorRemover = admin.buscarProfessorPorUsername(userProfessorRemover);
+	                         if (professorRemover != null) {
+	                        	 professorRemover.retirarProfessorTurmas();
+	                             admin.removerProfessor(professorRemover);
+	                             JOptionPane.showMessageDialog(null, "Professor removido com sucesso!");
+	                         } else {
+	                             JOptionPane.showMessageDialog(null, "Professor não encontrado.");
+	                         }
+	                         break;
+	
+	                     case "7":
+	                         // Remover Turma
+	                         String codigoTurmaRemover = JOptionPane.showInputDialog("Digite a sigla da disciplina a ser removida:");
+	                         Turma turmaRemover = admin.buscarTurmaPorCodigo(codigoTurmaRemover);
+	                         if(turmaRemover != null) {
+	                        	 admin.removerTurma(turmaRemover);
+	                        	 JOptionPane.showMessageDialog(null, "Turma removida com sucesso!");	                        	 
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, "Turma não encontrada.");	                        	 
+	                         }
+	                         break;
+	
+	                     case "8":
+	                         // Remover Disciplina
+	                         String siglaDisciplinaRemover = JOptionPane.showInputDialog("Digite a sigla da disciplina a ser removida:");
+	                         Disciplina disciplinaRemover = admin.buscarDisciplinaPorSigla(siglaDisciplinaRemover);
+	                         if(disciplinaRemover != null) {
+	                        	 admin.disciplinaRemover(disciplinaRemover);
+	                        	 JOptionPane.showMessageDialog(null, "Disciplina " + disciplinaRemover.getNome() +  " removida com sucesso!");
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, "Disciplina não encontrada.");	 
+	                         }
+	                         break;
+	
+	                     case "9":	                    
+	                         // Atualizar dados cadastrais Professor e Aluno
+	                    	 String[] options = {"Professor", "Aluno"};
+	                         int choice = JOptionPane.showOptionDialog(null, 
+	                                                                   "Escolha o tipo de usuário:", 
+	                                                                   "Seleção de Usuário", 
+	                                                                   JOptionPane.DEFAULT_OPTION, 
+	                                                                   JOptionPane.INFORMATION_MESSAGE, 
+	                                                                   null, 
+	                                                                   options, 
+	                                                                   options[0]);
+	                         String usuarioSetDados = JOptionPane.showInputDialog("Digite o username do Usuario: ");
+	                        Usuario usuarioAtualizacao;
+	                         if (choice == 0) {
+	                        	 usuarioAtualizacao = admin.buscarProfessorPorUsername(usuarioSetDados);
+	                         }else if(choice == 1)  {
+	                        	usuarioAtualizacao = admin.buscarAlunoPorUsername(usuarioSetDados); 
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, "Nenhuma opção válida foi selecionada.");
+	                             break;
+	                         }	                      
+	                         
+	                         if(usuarioAtualizacao != null) {
+	                        	 String usernameNovoUsuario = JOptionPane.showInputDialog("Digite o username do usuario:");
+		                         String senhaNovoUsuario = JOptionPane.showInputDialog("Digite a senha do usuario:");
+		                         String prontuarioNovoUsuario = JOptionPane.showInputDialog("Digite o prontuário do usuario:");
+		                         String nomeNovoUsuario = JOptionPane.showInputDialog("Digite o nome do usuario:");
+		                         String dataNovaNascimentoUsuario = JOptionPane.showInputDialog("Digite a data de nascimento do usuario:");
+		                         admin.setUsuario(usuarioAtualizacao, usernameNovoUsuario, senhaNovoUsuario, nomeNovoUsuario, prontuarioNovoUsuario, dataNovaNascimentoUsuario);
+		                         JOptionPane.showMessageDialog(null, "Atualização realizada com sucesso!");
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, "Usuario não encontrado!");	                        	 
+	                         }
+	                         break;
+	
+	                     case "10":
+	                         // atualizar Disciplina
+	                         String siglaDisciplinaAtualizacao = JOptionPane.showInputDialog("Digite a sigla da disciplina: ");
+	                         Disciplina disciplinaAtualizacao = admin.buscarDisciplinaPorSigla(siglaDisciplinaAtualizacao);
+	                         
+	                         if(disciplinaAtualizacao != null) {
+	                        	 String nomeNovoDisciplina = JOptionPane.showInputDialog("Digite o nome da disciplina:");
+		                         String siglaNovaDisciplina = JOptionPane.showInputDialog("Digite a sigla da disciplina:");
+		                         String emendaNovaDisciplina = JOptionPane.showInputDialog("Digite a emenda da disciplina:");
+		                         int cargaHorariaNovaDisciplina = Integer.parseInt(JOptionPane.showInputDialog("Digite a carga horária da disciplina:"));
+		                         int totalAulasNovoDisciplina = Integer.parseInt(JOptionPane.showInputDialog("Digite o total de aulas da disciplina:"));
+		                         admin.setDisciplina(disciplinaAtualizacao, nomeNovoDisciplina, siglaNovaDisciplina, emendaNovaDisciplina, cargaHorariaNovaDisciplina, totalAulasNovoDisciplina);
+		                         JOptionPane.showMessageDialog(null, "Atualização realizada com sucesso!");		                        	                        	 
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, "Disciplina não encontrada!");
+	                         }
+	                         break;
+	                         
+	                     case "11":
+	                    	//Atualizar Turma
+	                    	 while(true) {
+	                    		 String menuAtualizarTurma = "Atualizar dados da turma\n"
+	        	                    	 + "1. Atualizar codigo e sigla da turma\n"	        	                   
+	        	                    	 + "2. Atualizar Professor da turma\n"
+	        	                    	 + "3. Remover Matrícula da turma\n"
+	        	                    	 + "0. Sair";
+	        	                    	 
+	        	                    	 String alternativa = JOptionPane.showInputDialog(menuAtualizarTurma);
+	        	                    		
+	        	    	                 if (alternativa == null || alternativa.equals("0")) {
+	        	    	                     JOptionPane.showMessageDialog(null, "Voltando ao menu princiapal...");
+	        	    	                     break;
+	        	    	                 }
+	        	    	                 
+	        	    	                 	        	    	                
+	        	    	                 switch (alternativa) {
+	        	    	                     case "1":
+	        	    	                    	 String codigoTurmaMudar = JOptionPane.showInputDialog("Digite o código da Turma que sofrerá a atualização: ");
+	    	        	    	                 Turma turmaAtualizacao = admin.buscarTurmaPorCodigo(codigoTurmaMudar);
+	    	        	    	                 if (turmaAtualizacao == null) {
+	    	        	    	                     JOptionPane.showMessageDialog(null, "Turma não encontrada!");
+	    	        	    	                     
+	    	        	    	                 }else {
+	    	        	    	                	 String codigoNovoTurma = JOptionPane.showInputDialog("Digite o código novo da Turma: ");
+		        	    	                         admin.setNomeTurma(turmaAtualizacao, codigoNovoTurma);
+		        	    	                         JOptionPane.showMessageDialog(null, "Atualização realizada com sucesso!");
+	    	        	    	                 }
+	    	        	    	                 
+	        	    	                         
+	        	    	                         break;
+
+	        	    	                     case "2":
+	        	    	                    	 codigoTurmaMudar = JOptionPane.showInputDialog("Digite o código da Turma que sofrerá a atualização: ");
+	    	        	    	                 turmaAtualizacao = admin.buscarTurmaPorCodigo(codigoTurmaMudar);
+	    	        	    	                 if (turmaAtualizacao == null) {
+	    	        	    	                	 JOptionPane.showMessageDialog(null, "Turma não encontrada!");
+	    	        	    	                 }else {
+	    	        	    	                	 String atualizarProfessorTurma = JOptionPane.showInputDialog("Digite o username do novo professor: ");
+		        	    	                         Professor novoProfessorTurma = admin.buscarProfessorPorUsername(atualizarProfessorTurma);
+		        	    	                         
+		        	    	                         if (novoProfessorTurma != null) {
+		        	    	                             admin.setProfessorTurma(turmaAtualizacao, novoProfessorTurma);
+		        	    	                             JOptionPane.showMessageDialog(null, "Atualização realizada com sucesso!");
+		        	    	                         } else {
+		        	    	                             JOptionPane.showMessageDialog(null, "Professor não encontrado!");
+		        	    	                         }
+	    	        	    	                 }
+	    	        	    	                     
+	        	    	                         break;
+
+	        	    	                     case "3":
+	        	    	                    	 codigoTurmaMudar = JOptionPane.showInputDialog("Digite o código da Turma que sofrerá a atualização: ");
+	    	        	    	                 turmaAtualizacao = admin.buscarTurmaPorCodigo(codigoTurmaMudar);
+	    	        	    	                 if (turmaAtualizacao == null) {
+	    	        	    	                	 JOptionPane.showMessageDialog(null, "Turma não encontrada!");
+	    	        	    	                 }else {
+	    	        	    	                	 String prontuarioAlunoRemover = JOptionPane.showInputDialog("Digite o prontuário do aluno que será removido: ");
+		        	    	                         Matricula alunoRemoverMatricula = turmaAtualizacao.buscarMatriculaPorProntuarioAluno(prontuarioAlunoRemover);
+
+		        	    	                         if (alunoRemoverMatricula != null) {
+		        	    	                             turmaAtualizacao.removerMatricula(alunoRemoverMatricula);
+		        	    	                             JOptionPane.showMessageDialog(null, "Matrícula removida com sucesso!");
+		        	    	                         } else {
+		        	    	                             JOptionPane.showMessageDialog(null, "Matrícula não encontrada!");
+		        	    	                         }
+	    	        	    	                 }
+	    	        	    	                 	        	    	                         
+	        	    	                         break;	    	                     	        	    	            
+	        	    	            }	        	    	                	      
+	                    	 }
+	                    	 
+	                    	 
+	                     default:
+	                         JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+	                 }
+	        	 }
+	        		
+	        }else if(usuario instanceof Professor && !tipoUsuario.equals("0")) {
+	        	
+	        	 while (true) {
+	                 String menu = "Professor " + usuario.getNome() + "\n"
+	                         + "1. Relatório turma\n"
+	                         + "2. Cadastrar Avaliação\n"
+	                         + "3. Cadastrar notas das avaliações\n"
+	                         + "4. Atualizar avaliação\n"
+	                         + "5. Remover avaliação\n"
+	                         + "6. Atualizar Frequencia\n"
+	                         + "0. Sair\n";
+	                 
+	                 String opcao = JOptionPane.showInputDialog(menu);
+	
+	                 if (opcao == null || opcao.equals("0")) {
+	                     JOptionPane.showMessageDialog(null, "Voltando ao menu princiapal...");
+	                     break;
+	                 }
+	             
+	
+	                 switch (opcao) {
+	                     case "1":
+	                         // Visualizar turma
+	                    	 String codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         Turma turma = ((Professor)usuario).buscarTurmaPorCodigo(codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null, turma.exibirMatriculas());
+	                         }
+	                         break;
+	
+	                     case "2":
+	                    	    codigoTurma = JOptionPane.showInputDialog("Digite o código da turma:");
+	                    	    turma = ((Professor) usuario).buscarTurmaPorCodigo(codigoTurma);
+	                    	    if (turma == null) {
+	                    	        JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                    	    } else {
+	                    	        // Validar se a quantidade de avaliações é um número válido
+	                    	        String quantidadeAvaliacoesStr = JOptionPane.showInputDialog("Digite a quantidade de avaliações");
+	                    	        int quantidadeAvaliacoes = 0;
+
+	                    	        try {
+	                    	            quantidadeAvaliacoes = Integer.parseInt(quantidadeAvaliacoesStr);
+	                    	        } catch (NumberFormatException e) {
+	                    	            JOptionPane.showMessageDialog(null, "A quantidade de avaliações deve ser um número válido.");
+	                    	            return;  // ou continue para pular a iteração e tentar novamente
+	                    	        }
+
+	                    	        for (int i = 0; i < quantidadeAvaliacoes; i++) {
+	                    	            String nomeAvaliacao = JOptionPane.showInputDialog("Digite o nome da avaliação " + (i + 1));
+	                    	            String pesoAvaliacaoStr = JOptionPane.showInputDialog("Digite o peso da avaliação " + (i + 1));
+	                    	            
+	                    	            // Verificar se o peso é um número válido antes de tentar convertê-lo
+	                    	            int pesoAvaliacao = 0;
+	                    	            try {
+	                    	                pesoAvaliacao = Integer.parseInt(pesoAvaliacaoStr);
+	                    	            } catch (NumberFormatException e) {
+	                    	                JOptionPane.showMessageDialog(null, "O peso da avaliação deve ser um número válido.");
+	                    	                return;  // ou continue para pular a iteração e tentar novamente
+	                    	            }
+	                    	            
+	                    	            Avaliacao avaliacao = new Avaliacao(nomeAvaliacao, pesoAvaliacao);
+	                    	            turma.adicionarAvaliacao(avaliacao);
+	                    	            turma.adicionarAvaliacaoMatriculas(avaliacao);
+	                    	            
+	                    	            JOptionPane.showMessageDialog(null, "Avaliação adicionada com sucesso!");
+	                    	   
+	                    	        }	                    	        
+	                    	    }
+	                    	    break;
+	
+	                     case "3":
+	                         // Cadastrar nota das avaliações 
+	                    	 
+	                    	 codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         turma = ((Professor)usuario).buscarTurmaPorCodigo(codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                         }else {
+	                        	 String prontuarioAluno = JOptionPane.showInputDialog("Digite o prontuario do Aluno");
+	                        	 Matricula matricula = turma.buscarMatriculaPorProntuarioAluno(prontuarioAluno);
+	                        	 if(matricula == null) {
+	                        		 JOptionPane.showMessageDialog(null, "Não existe nenhum aluno com esse prontuario inscrito nessa turma.");
+	                        	 }else {
+			                    	 String avaliacaoNome = JOptionPane.showInputDialog("Digite o nome da avaliação");
+			                    	 Avaliacao avaliacao = matricula.buscarAvaliacao(avaliacaoNome);
+			                    	 if(avaliacao == null) {
+			                    		 JOptionPane.showMessageDialog(null, "Não existe nenhuma avaliação com esse nome cadastrado nesta turma.");
+			                    	 }else {
+			                    		 String notaStr = JOptionPane.showInputDialog("Digite a nota do aluno");
+				                    	 double nota = Double.parseDouble(notaStr);
+				                    	 matricula.setNotaAvaliacao(avaliacao, nota);
+				                    	 JOptionPane.showMessageDialog(null, "Nota enviada com sucesso");
+				                    	 
+			                    	 }
+			                    	 
+	                        	 }
+	                         }
+	                         break;
+	                     case "4": 
+	                    	 // Atualizar Avaliação
+	                    	 codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         turma = ((Professor)usuario).buscarTurmaPorCodigo(codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                         }else {
+	                        	 String nomeAvaliacao = JOptionPane.showInputDialog("Digite o nome da avaliação ");
+	                        	 Avaliacao setAvaliacao = turma.buscarAvaliacaoPorNome(nomeAvaliacao);
+	                        	 if(setAvaliacao != null) {
+	                        		 String novoNomeAvaliacao = JOptionPane.showInputDialog("Digite o novo nome da avaliação: ");
+	                        		 String pesoAvaliacaoStr = JOptionPane.showInputDialog("Digite o novo peso da avaliação ");
+	                    	            
+	                    	            // Verificar se o peso é um número válido antes de tentar convertê-lo
+	                    	           double pesoNovoAvaliacao = 0.0;
+	                    	           try {
+	                    	               pesoNovoAvaliacao = Double.parseDouble(pesoAvaliacaoStr);
+	                    	           } catch (NumberFormatException e) {
+	                    	                JOptionPane.showMessageDialog(null, "O peso da avaliação deve ser um número válido.");
+	                    	                return;  // ou continue para pular a iteração e tentar novamente
+	                    	            }
+	                    	           turma.setAvaliacaoMatriculas(setAvaliacao, novoNomeAvaliacao, pesoNovoAvaliacao);
+	                    	           turma.setAvaliacao(setAvaliacao, novoNomeAvaliacao, pesoNovoAvaliacao);
+	                    	           
+	                    	           JOptionPane.showMessageDialog(null, "Avaliaçao atualizada com sucesso");
+				                    	 
+	                              }else {
+	                            	  JOptionPane.showMessageDialog(null, "Não existe nenhuma avaliação com esse nome cadastrado nesta turma.");
+	                              }
+	                        	 
+	                         }
+	                         break;
+	                     case "5": 
+	                    	 // remover Avaliação
+	                    	 codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         turma = ((Professor)usuario).buscarTurmaPorCodigo(codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                         }else {
+	                        	 String nomeAvaliacaoRemover = JOptionPane.showInputDialog("Digite o nome da avaliação que será removida ");
+	                        	 Avaliacao AvaliacaoRemover = turma.buscarAvaliacaoPorNome(nomeAvaliacaoRemover);
+	                        	 if(AvaliacaoRemover == null) {
+	                        		 JOptionPane.showMessageDialog(null, "Não existe nenhuma avaliação com esse nome cadastrado nesta turma.");
+	                        	 }else {
+	                        		 turma.removerAvaliacaoMatriculas(AvaliacaoRemover);
+	                        		 turma.removerAvaliacao(AvaliacaoRemover);	            
+	                        		 JOptionPane.showMessageDialog(null, "Avaliaçao removida com sucesso");
+	                        	 }
+	                         }
+	                         break;
+	                         
+	                     case "6":
+	                    	 codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         turma = ((Professor)usuario).buscarTurmaPorCodigo(codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Você não está vinculado a nenhuma turma com o código informado.");
+	                         }else {
+	                        	 String prontuarioAluno = JOptionPane.showInputDialog("Digite o prontuario do Aluno");
+	                        	 Matricula matricula = turma.buscarMatriculaPorProntuarioAluno(prontuarioAluno);
+	                        	 if(matricula == null) {
+	                        		 JOptionPane.showMessageDialog(null, "Não existe nenhum aluno com esse prontuario inscrito nessa turma.");
+	                        	 }else {
+	                        		 String aulasDadasStr = JOptionPane.showInputDialog("Digite o número total de aulas dadas: ");
+	                        		 String faltasStr = JOptionPane.showInputDialog("Digite o número de faltas do aluno: "); 
+	                    	            	                              
+	                    	           try {
+	                    	               int aulasDadas = Integer.parseInt(aulasDadasStr);
+	                    	               int faltas = Integer.parseInt(faltasStr);
+	                    	               
+	                    	               matricula.getFrequencia().adicionarAulas(aulasDadas);
+	                    	               matricula.getFrequencia().registrarFaltas(faltas);
+	                    	               
+	                    	               JOptionPane.showMessageDialog(null, "Frequência atualizada para " + matricula.getPercentualFrequencia() + "%");
+	                    	           } catch (NumberFormatException e) {
+	                    	        	   JOptionPane.showMessageDialog(null, "Erro: Digite valores numéricos válidos.");
+	                    	               
+	                    	            }
+	                    	          
+				                    	 
+			                    }
+			                    	 
+	                        }
+	                         
+	                         break;
+	
+	                     default:
+	                         JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+	                 }
+	        	 }
+	        	
+	        }else if(usuario instanceof Aluno && !tipoUsuario.equals("0")) {
+	        	
+
+	        	
+	        	 while (true) {
+	                 String menu = "Aluno " + usuario.getNome() + "\n"
+	                         + "1. Visualizar turmas\n"
+	                         + "2. Inscrever-se em uma turma\n"
+	                         + "3. Boletim\n"
+	                         + "0. Sair\n";
+	                 
+	                 String opcao = JOptionPane.showInputDialog(menu);
+	
+	                 if (opcao == null || opcao.equals("0")) {
+	                     JOptionPane.showMessageDialog(null, "Voltando ao menu princiapal...");
+	                     break;
+	                 }
+	             
+	
+	                 switch (opcao) {
+	                     case "1":
+	                         // Visualizar turmas	                                   
+	                         String turmasList = ((Aluno) usuario).visualizarTurmasDisponiveis(admin);
+	                         JOptionPane.showMessageDialog(null, turmasList);
+	                         break;
+	
+	                     case "2":
+	                         // Inscrever-se em uma turma	                    	 	                    	                 	 
+	                         String codigoTurma = JOptionPane.showInputDialog("Digite o codigo da turma:");	                         
+	                         Turma turma = ((Aluno) usuario).buscarTurmaParaInscrever(admin, codigoTurma);
+	                         if(turma == null) {
+	                        	 JOptionPane.showMessageDialog(null, "Não existe nenhuma turma com o código informado.");
+	                         }else {
+	                        	 JOptionPane.showMessageDialog(null,((Aluno) usuario).solicitarMatricula(admin, turma, (Aluno) usuario));
+	                         }
+	                         break;
+	
+	                     case "3":
+	                         // boletim 
+	                    	 String listMatriculas = usuario.visualizarMatriculas();
+	                    	 JOptionPane.showMessageDialog(null, listMatriculas);
+	                         break;
+	
+	                     default:
+	                         JOptionPane.showMessageDialog(null, "Opção inválida. Tente novamente.");
+	                 }
+	        	 }
+	        	
+	        }
+	        
+        if(tipoUsuario.equals("0")) {
+        	JOptionPane.showMessageDialog(null, "Saindo do sistema...");							
+        }
+    }while(!tipoUsuario.equals("0"));
+ }
+}

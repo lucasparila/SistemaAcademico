@@ -1,0 +1,178 @@
+package br.ifsp.lucasparila.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.ifsp.lucasparila.Turma;
+
+public class Matricula {
+	
+	private List<Avaliacao> avaliacoes;
+	private Frequencia frequencia;
+    private Aluno aluno;
+    private Turma turma;
+
+    // Construtor
+    public Matricula(Aluno aluno, Turma turma) {
+        this.aluno = aluno;
+        this.turma = turma;
+        avaliacoes = new ArrayList<>();
+        this.frequencia=new Frequencia();
+    }
+
+    // Getters e Setters
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
+    }
+
+    public Turma getTurma() {
+        return turma;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+		return avaliacoes;
+	}
+    
+    public Avaliacao buscarAvaliacao(String avaliacaoNome) {
+    	
+    	for(Avaliacao a : avaliacoes) {
+    		if(a.getNome().equals(avaliacaoNome)){
+    			
+    			return a;
+    		}
+    	}
+    	
+    	return null;
+    }
+    public void setAvaliacoes(Avaliacao avaliacao, String nomeAvaliacao, double peso) {
+    	for(Avaliacao a : avaliacoes) {
+    		if(a.getNome().equalsIgnoreCase(avaliacao.getNome()) && a.getPeso() == avaliacao.getPeso()) {
+    			a.setNome(nomeAvaliacao);
+    			a.setPeso(peso);
+    		}
+    	}
+    }
+
+	public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+		this.avaliacoes = avaliacoes;
+	}
+	
+	public void setNotaAvaliacao(Avaliacao avaliacao, double nota) {
+		avaliacao.setNota(nota);
+	}
+
+	public void setTurma(Turma turma) {
+        this.turma = turma;
+    }
+
+	// Método para visualizar a matrícula
+    public String visualizarMatricula() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Aluno: ").append(aluno.getNome()).append("\n");
+        sb.append("Matriculado na turma: ").append(turma.getCodigo()).append("\n");
+        sb.append("Disciplina: ").append(turma.getDisciplina().getNome()).append("\n");
+        sb.append("Avaliações:\n");
+
+        if (avaliacoes.isEmpty()) {
+            sb.append("Nenhuma avaliação cadastrada para o aluno.\n");
+        } else {
+            for (Avaliacao avaliacao : avaliacoes) {
+                sb.append("- ").append(avaliacao.getNome())
+                  .append(" (Peso: ").append(avaliacao.getPeso())
+                  .append(", Nota: ").append(avaliacao.getNota()).append(")\n");
+            }
+            
+            sb.append(" Nota final: ").append(calcularMediaMatricula()).append("\n");
+            
+        }
+        
+        sb.append("Total Aulas Dadas: ").append(this.frequencia.getAulasDadas()).append("\n");
+        sb.append("Total de Faltas: ").append(this.frequencia.getFaltas()).append("\n");
+        sb.append("Percentual Frequencia: ").append(percentualFrequencia()).append("\n");
+        sb.append("Situação: ").append(situacaoMatricula()).append("\n");
+
+        sb.append("----------------------------\n");
+
+        return sb.toString();
+    }
+
+    
+    public void adicionarAvaliacao(Avaliacao avaliacao) {
+        // Verifica se já existe uma avaliação com o mesmo nome e peso
+        for (Avaliacao a : avaliacoes) {
+            if (a.getNome().equalsIgnoreCase(avaliacao.getNome()) && a.getPeso() == avaliacao.getPeso()) {
+                return; // Sai do método sem adicionar
+            }
+        }
+
+        // Se não existir, adiciona a nova avaliação
+        avaliacoes.add(avaliacao);
+        System.out.println("Avaliação adicionada com sucesso!");
+    }
+
+    
+    double calcularMediaMatricula() {
+    	double media = 0.0;
+    	int somaPesos = 0;
+    	for(Avaliacao a : avaliacoes) {
+    		media += a.calcularNotaParcial();
+    		somaPesos += a.getPeso();
+    	}
+    	
+    	return media / somaPesos;
+    }
+    
+    
+    public void removerAvaliacao(Avaliacao avaliacao) {
+    	
+    	  for (Avaliacao a : avaliacoes) {
+              if (a.getNome().equalsIgnoreCase(avaliacao.getNome()) && a.getPeso() == avaliacao.getPeso()) {
+            	  avaliacoes.remove(avaliacao);
+              }
+    	  }
+    }
+
+	public Frequencia getFrequencia() {
+		return frequencia;
+	}
+
+	public void setFrequencia(Frequencia frequencia, int aulasDadas, int faltas) {
+		this.frequencia.setAulasDadas(aulasDadas);
+		this.frequencia.setFaltas(faltas);
+	}
+	
+	public double percentualFrequencia() {
+		if(this.frequencia.getAulasDadas() == 0) {
+			return 0.0;
+		}
+		
+		return this.frequencia.calcularFrequencia();
+	}
+	
+	public double getPercentualFrequencia() {
+        return this.frequencia.calcularFrequencia();
+    }
+	
+	public String situacaoMatricula() {
+		String situacao;
+		
+		if(this.frequencia.getAulasDadas() < this.turma.getDisciplina().getTotalAulas()) {
+			situacao = "Cursando.";
+					
+		}else if(this.frequencia.getAulasDadas() == this.turma.getDisciplina().getTotalAulas() && calcularMediaMatricula() >= 6.0 && percentualFrequencia()> 75.0) {
+			situacao = "Aprovado";
+		}else if(this.frequencia.getAulasDadas() == this.turma.getDisciplina().getTotalAulas() && calcularMediaMatricula() > 4.0 && calcularMediaMatricula() < 6.0 && percentualFrequencia()> 75.0 ) {
+			situacao = "IFA";
+		}else {
+			situacao = "Reprovado";
+		}
+		
+		return situacao;
+		
+	}
+
+}

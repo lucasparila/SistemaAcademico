@@ -1,0 +1,22 @@
+package br.ifsp.lucasparila;
+
+import java.util.List;
+
+public interface IUsuario {
+
+	
+	    
+	    // Método para buscar uma turma pelo código
+	    Turma buscarTurmaPorCodigo(String codigo);
+
+	    // Método para validar senha do usuário
+	    boolean validarSenha(String senha);
+
+	    // Método para visualizar as matrículas do usuário
+	    List<Matricula> visualizarMatriculas();
+
+	    // Método para visualizar as turmas disponíveis
+	    List<Turma> visualizarTurmasDisponiveis();
+
+
+}
