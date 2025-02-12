@@ -17,10 +17,6 @@ O Sistema Acadêmico tem como objetivo gerenciar as informações de alunos, dis
 - Consultas de desempenho dos alunos.
 - Sistema de login com diferentes permissões de acesso para administradores, alunos e professores.
 
-## Barra de Andamento
-
-80% completo
-
 ## Tecnologias Utilizadas
 
 - Java
